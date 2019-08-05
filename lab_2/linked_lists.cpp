@@ -24,21 +24,33 @@ void AddFirst(int a,int b,struct coordinate** headptr){
 }
 
 void DelFirst(struct coordinate** headptr){
-	coordinate* temp = *headptr;
-    *headptr = temp->next;
-    free(temp);
+	if(*headptr == NULL){
+		cout<<"-1";
+	}
+	else{
+		coordinate* temp = *headptr;
+    	*headptr = temp->next;
+    	free(temp);
+    	cout<<"0";
+	}
 } 
 
 void Del(int a,int b,struct coordinate** headptr){
 	coordinate* temp = *headptr;
-	coordinate* temp_ = NULL; 
+	coordinate* temp_ = NULL;
+	int flag = 0; 
 	while(temp!=NULL){
 		if(temp->x==a&&temp->y==b&&temp_!=NULL){
 			temp_->next = temp->next;
 			free(temp);
+			cout<<"0";
+			flag =1;
+			break;
 		}
 		else if(temp_ == NULL&&temp->x==a&&temp->y==b){
 			DelFirst(headptr);
+			flag = 1;
+			break;
 		}
 		else{
 			temp_ = temp;
@@ -46,6 +58,8 @@ void Del(int a,int b,struct coordinate** headptr){
 
 		}
 	}
+	if(flag == 0)
+		cout<<"-1";
 }
 void search(double d, struct coordinate** headptr){
 	coordinate* temp = *headptr;
@@ -65,15 +79,15 @@ void search(int a ,int b ,struct coordinate** headptr){
 	int flag = 0;
 	while(temp!= NULL){
 		if(temp->x==a&&temp->y==b){
-			flag =1;
-			break; 
+			flag++;
+			temp = temp->next;
 		}
 		else{
 			temp = temp->next;
 		}
 	}
-	if(flag==1){
-		cout<<true;
+	if(flag>=1){
+		cout<<flag;
 	}
 	else{
 		cout<<false;
@@ -91,8 +105,10 @@ void length(struct coordinate** headptr){
 
 int main(){
 	coordinate* head = NULL;
+	int T;
+	cin>>T;
+	while(T--){
 	int condition;
-	while(1){
 		cin>>condition;
 		if(condition==1){
 			int a,b;
@@ -119,9 +135,10 @@ int main(){
 		}
 		else if(condition ==6){
 			length(&head);
-			break;
 		}
-
 	}
+
+	
 	return 0;
 }
+
