@@ -25,72 +25,75 @@ void AddFirst(int a,int b,struct coordinate** headptr){
 
 void DelFirst(struct coordinate** headptr){
 	if(*headptr == NULL){
-		cout<<"-1";
+		cout<<"-1"<<"\n";
 	}
 	else{
 		coordinate* temp = *headptr;
     	*headptr = temp->next;
     	free(temp);
-    	cout<<"0";
 	}
 } 
 
 void Del(int a,int b,struct coordinate** headptr){
 	coordinate* temp = *headptr;
-	coordinate* temp_ = NULL;
-	int flag = 0; 
+	coordinate* temp_ = NULL; 
+	int flag =0;
 	while(temp!=NULL){
 		if(temp->x==a&&temp->y==b&&temp_!=NULL){
 			temp_->next = temp->next;
 			free(temp);
-			cout<<"0";
 			flag =1;
-			break;
 		}
 		else if(temp_ == NULL&&temp->x==a&&temp->y==b){
 			DelFirst(headptr);
-			flag = 1;
-			break;
+			flag =1;
 		}
 		else{
 			temp_ = temp;
 			temp = temp->next;
-
-		}
 	}
-	if(flag == 0)
-		cout<<"-1";
+	}
+		if(flag ==0){
+			cout<<"-1"<<"\n";
+		}
 }
 void search(double d, struct coordinate** headptr){
 	coordinate* temp = *headptr;
+	int flag =0;
 	while(temp!= NULL){
 		double len = sqrt((temp->x)*(temp->x)+(temp->y)*(temp->y));
 		if(len<=d){
-			cout<<temp->x<<" "<<temp->y<<"\n";
 			temp = temp->next;
+			flag++;
 		}
 		else{
 			temp = temp->next;	
 		}
 	}
+	if(flag ==0){
+			cout<<"-1"<<"\n";
+		}
+	else{
+		cout<<flag<<"\n";
+		}
 }
 void search(int a ,int b ,struct coordinate** headptr){
 	coordinate* temp = *headptr;
 	int flag = 0;
 	while(temp!= NULL){
 		if(temp->x==a&&temp->y==b){
-			flag++;
-			temp = temp->next;
+			flag =1;
+			break; 
 		}
 		else{
 			temp = temp->next;
 		}
 	}
-	if(flag>=1){
-		cout<<flag;
+	if(flag==1){
+		cout<<"True"<<"\n";
 	}
 	else{
-		cout<<false;
+		cout<<"False"<<"\n";
 	}
 }
 void length(struct coordinate** headptr){
@@ -105,10 +108,10 @@ void length(struct coordinate** headptr){
 
 int main(){
 	coordinate* head = NULL;
+	int condition;
 	int T;
 	cin>>T;
 	while(T--){
-	int condition;
 		cin>>condition;
 		if(condition==1){
 			int a,b;
@@ -136,9 +139,7 @@ int main(){
 		else if(condition ==6){
 			length(&head);
 		}
-	}
 
-	
+	}
 	return 0;
 }
-
