@@ -80,9 +80,9 @@ vector<string> infixToPostfix(vector<string> s)
 } 
 bool isOperator(string c) 
 { 
-    if (c == "+" || c == "-" || 
+    if (c.size()==1&&(c == "+" || c == "-" || 
             c == "*" || c == "/" || 
-            c == "^") 
+            c == "^")) 
         return true; 
     return false; 
 } 
@@ -167,7 +167,7 @@ int main()
     
 	for(int i=0; i<p.length();i++)
 	{
-		if(p[i]>=48 && p[i]<=57)
+		if((p[i]>=48 && p[i]<=57)||(p[i] == 45 && (P.size()>0 && P[P.size()-1] == "(")))
 		{
           temp+=p[i];
 		}
@@ -177,7 +177,7 @@ int main()
             temp=""; temp+=p[i];  
               P.push_back(temp);
             temp="";
-		}
+		}   
 
 	}
     P.push_back(temp);
