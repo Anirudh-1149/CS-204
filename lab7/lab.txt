@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<string> equal(vector<string> v, int max){
+	int len  = v.size();
+	for(int i=0;i<len;i++){
+		int t = v[i].length();
+		while(v[i].length()<max)
+			v[i].append(v[i]);
+		v[i] = v[i].substr(0,max);
+	}
+	return v;
+}
+
+vector <pair <string,string> >countsort(vector <pair <string,string> > air, int in){
+	int len = air.size();
+	vector <pair <string,string> > we(len);
+	//pair <string,string> we[len];
+	int arr[10] = {0};
+	for(int i=0;i<len;i++){
+		arr[(air[i].second)[in]]++;
+	}
+	for(int i=1;i<10;i++){
+		arr[i]+=arr[i-1];
+	}
+	for(int i=0;i<len;i++){
+		we[arr[(air[i].second)[in]]] = air[i];
+		arr[(air[i].second)[in]]--;
+	}
+	return we;
+
+}
+
+vector <pair <string,string> > sort(vector <pair <string,string> > air){
+	int d = air[0].second.length();
+	for(int i=0;i<d;i++)
+		air = countsort(air,i);
+	return air;
+}
+
+int main(){
+	int t;
+	cin>>t;
+	vector<string> v;
+	int max=0;
+	while(t--){
+		string s;
+		cin>>s;
+		if(s.length()>max)
+			max = s.length();
+		v.push_back(s);
+	}
+	int len = v.size();
+	max++;
+	std::vector<string> same=equal(v,max);
+	vector <pair <string,string> > map;
+	for(int i=0;i<len;i++){
+		map.push_back(make_pair(v[i],same[i]));
+	}
+	map = sort(map);
+
+}
