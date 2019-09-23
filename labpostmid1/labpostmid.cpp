@@ -1,46 +1,51 @@
 #include<bits/stdc++.h>
 using namespace std; 
-
-int partition(double arr[], int l, int p); 
-/*double isort(double arr[],int l,int p){
-    int i;
-    for(i=l-1;i<p+1 -(p+1)%5;i+=5){
-        sort(arr+i,arr+i+4);
-    }
-    i-=5
-    sort(arr+i,arr+i+(p+1)%5-1)
-    int y;
-    if(p%2==0)
-        y=p/5;
-    else
-        y= p/5+1;
-    double arr2[y];
-    for(int s=0;s<p;s+=5){
-        arr2[p] = arr[2+p]
-    }
-}*/
-
-
-double Blum(double arr[], int l, int p, int k) 
+  
+int partition(int arr[], int l, int r, int k); 
+int findMedian(int arr[], int n) 
 { 
-    int pos = partition(arr, l, p); 
-    if (pos-l == k-1) 
-        return arr[pos]; 
-    if (pos-l > k-1)  
-        return Blum(arr, l, pos-1, k); 
-    return Blum(arr, pos+1, p, k-pos+l-1); 
+    sort(arr, arr+n);
+    return arr[n/2]; 
+} 
+int Blum(int arr[], int l, int r, int k) 
+{ 
+    if (k > 0 && k <= r - l + 1) 
+    { 
+        int n = r-l+1; 
+        int i, median[(n+4)/5]; 
+        for (i=0; i<n/5; i++) 
+            median[i] = findMedian(arr+l+i*5, 5); 
+        if (i*5 < n) 
+        { 
+            median[i] = findMedian(arr+l+i*5, n%5);  
+            i++; 
+        }     
+        int medOfMed = (i == 1)? median[i-1]: 
+                                 Blum(median, 0, i-1, i/2); 
+        if (pos-l == k-1) 
+            return arr[pos]; 
+        if (pos-l > k-1)  
+            return Blum(arr, l, pos-1, k); 
+        return Blum(arr, pos+1, r, k-pos+l-1); 
+    } 
+    return INT_MAX; 
 } 
   
-void swap(double *x, double *y) 
+void swap(int *a, int *b) 
 { 
-    double temp = *x; 
-    *x = *y; 
-    *y = temp; 
+    int temp = *a; 
+    *a = *b; 
+    *b = temp; 
 } 
-int partition(double arr[], int l, int r) 
+int partition(int arr[], int l, int r, int x) 
 { 
-    double x = arr[r];
-    int i = l; 
+
+    int i; 
+    for (i=l; i<r; i++) 
+        if (arr[i] == x) 
+           break; 
+    swap(&arr[i], &arr[r]); 
+    i = l; 
     for (int j = l; j <= r - 1; j++) 
     { 
         if (arr[j] <= x) 
@@ -52,7 +57,6 @@ int partition(double arr[], int l, int r)
     swap(&arr[i], &arr[r]); 
     return i; 
 } 
-
 int main()
 {
 	int k;
@@ -60,17 +64,17 @@ int main()
 	while(k--){
 		int p;
 		cin>>p;
-		double arr[p];
-		double x,y;
+		int arr[p];
+		int x,y;
 		for(int i=0;i<p;i++){
 			cin>>x>>y;
-			arr[i] = sqrt(pow(x,2)+pow(y,2));
+			arr[i] = pow(x,2)+pow(y,2);
 		}
-		double d;
+		int d;
 		if(p%2==0)
-			d = Blum(arr,0,p-1,p/2);
+			d = Blum(arr, 0, n-1, p/2);
 		else
-			d = Blum(arr,0,p-1,p/2+1);
-		cout<<d<<"\n";	
+			d = Blum(arr, 0, n-1, p/2+1);
+		cout<<sqrt(d)<<"\n";	
 	}
 }
