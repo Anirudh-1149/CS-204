@@ -1,80 +1,93 @@
-#include<bits/stdc++.h>
-using namespace std; 
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+ll partition(ll arr[], ll l, ll r, ll k); 
   
-int partition(int arr[], int l, int r, int k); 
-int findMedian(int arr[], int n) 
+ll findMedian(ll arr[], ll n) 
 { 
-    sort(arr, arr+n);
-    return arr[n/2]; 
+    sort(arr, arr+n);   
+    return arr[n/2];   
 } 
-int Blum(int arr[], int l, int r, int k) 
+  
+ll kthSmallest(ll arr[], ll l, ll r, ll k) 
 { 
+    
     if (k > 0 && k <= r - l + 1) 
     { 
-        int n = r-l+1; 
-        int i, median[(n+4)/5]; 
+        ll n = r-l+1; 
+   
+        ll i,median[(n+4)/5]; 
         for (i=0; i<n/5; i++) 
             median[i] = findMedian(arr+l+i*5, 5); 
-        if (i*5 < n) 
+        if (i*5 < n)  
         { 
             median[i] = findMedian(arr+l+i*5, n%5);  
             i++; 
         }     
-        int medOfMed = (i == 1)? median[i-1]: 
-                                 Blum(median, 0, i-1, i/2); 
+   
+        ll medOfMed = (i == 1)? median[i-1]: 
+                                 kthSmallest(median, 0, i-1, i/2); 
+   
+        ll pos = partition(arr, l, r, medOfMed); 
+  
         if (pos-l == k-1) 
             return arr[pos]; 
         if (pos-l > k-1)  
-            return Blum(arr, l, pos-1, k); 
-        return Blum(arr, pos+1, r, k-pos+l-1); 
+            return kthSmallest(arr, l, pos-1, k); 
+  
+        return kthSmallest(arr, pos+1, r, k-pos+l-1); 
     } 
+  
     return INT_MAX; 
 } 
   
-void swap(int *a, int *b) 
+void swapm(ll *a, ll *b) 
 { 
-    int temp = *a; 
+    ll temp = *a; 
     *a = *b; 
     *b = temp; 
 } 
-int partition(int arr[], int l, int r, int x) 
+  
+ll partition(ll arr[], ll l, ll r, ll x) 
 { 
-
-    int i; 
+    ll i; 
     for (i=l; i<r; i++) 
         if (arr[i] == x) 
            break; 
-    swap(&arr[i], &arr[r]); 
+    swapm(&arr[i], &arr[r]); 
     i = l; 
-    for (int j = l; j <= r - 1; j++) 
+    for (ll j = l; j <= r - 1; j++) 
     { 
         if (arr[j] <= x) 
         { 
-            swap(&arr[i], &arr[j]); 
+            swapm(&arr[i], &arr[j]); 
             i++; 
         } 
     } 
-    swap(&arr[i], &arr[r]); 
+    swapm(&arr[i], &arr[r]); 
     return i; 
 } 
+
 int main()
 {
-	int k;
-	cin>>k;
-	while(k--){
-		int p;
-		cin>>p;
-		int arr[p];
-		int x,y;
-		for(int i=0;i<p;i++){
-			cin>>x>>y;
-			arr[i] = pow(x,2)+pow(y,2);
-		}
-		int d;
-		if(p%2==0)
-			d = Blum(arr, 0, n-1, p/2);
-		else
-			d = Blum(arr, 0, n-1, p/2+1);
-		cout<<sqrt(d)<<"\n";	
-	}
+    ll t; 
+    cin>>t;
+    while(t--)
+    {
+        ll n;cin>>n;
+        ll d[n];
+        for(ll i=0; i<n; i++)
+        {
+            ll x,y; cin>>x>>y;
+            ll t=(x*x+y*y);
+            d[i]=t;
+        }
+        ll a=kthSmallest(d, 0, n-1, n/2);
+        double sol=sqrt(a);
+        ll b=kthSmallest(d, 0, n-1, (n+1)/2);
+        double val=sqrt(b);
+        if(n%2==0) cout<<sol<<endl;
+        else cout<<val<<endl;
+    }
 }
