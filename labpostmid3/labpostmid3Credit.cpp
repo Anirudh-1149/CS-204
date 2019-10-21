@@ -66,5 +66,5 @@ int main()
 		}
 		i++;
 	}
-	cout<<"color is: "<<col<<"\n"<<"length is: "<<max<<"\n";
+	cout<<max<<" "<<col;
 }
