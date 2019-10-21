@@ -51,6 +51,6 @@ int main()
 			if(isvalid(i,p,m,n)){BFS(i,p,m,n);}
 		}
 	}
-	cout<<Maxval<<"\n";
+	cout<<Maxval;
 
 }
